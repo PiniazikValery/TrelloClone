@@ -27,3 +27,13 @@ export const sort = (
         }
     }
 }
+
+export const editListTitle =(listId, title) => {
+    return {
+        type: CONSTANTS.EDIT_LIST_TITLE,
+        payload: {
+            listId,
+            title
+        }
+    }
+}
