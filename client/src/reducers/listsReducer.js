@@ -72,23 +72,23 @@ const listsReducer = (state = initialState, action) => {
                 droppableIdStart,
                 droppableIdEnd,
                 droppableIndexStart,
-                droppableIndexEnd,                
+                droppableIndexEnd,
                 type
             } = action.payload;
             const newState = [...state];
-            
+
             if (type === 'list') {
                 const list = newState.splice(droppableIndexStart, 1);
                 newState.splice(droppableIndexEnd, 0, ...list);
                 return newState;
             }
-            
+
             if (droppableIdStart === droppableIdEnd) {
                 const list = state.find(list => droppableIdStart === list.id);
                 const card = list.cards.splice(droppableIndexStart, 1);
                 list.cards.splice(droppableIndexEnd, 0, ...card);
             }
-            
+
             if (droppableIdStart !== droppableIdEnd) {
                 const listStart = state.find(list => droppableIdStart === list.id);
                 const card = listStart.cards.splice(droppableIndexStart, 1);
@@ -110,6 +110,14 @@ const listsReducer = (state = initialState, action) => {
             const newState = [...state];
             const card = state.find((list) => { return list.id === listID }).cards.find((card) => { return card.id === cardID });
             card.text = text;
+            return newState;
+        }
+        case CONSTANTS.DELETE_CARD: {
+            const { listID, cardID } = action.payload;
+            const newState = [...state];
+            const list = state.find((list) => { return list.id === listID });   
+            const newCards = list.cards.filter(card => card.id !== cardID);
+            list.cards = newCards;
             return newState;
         }
         default:
