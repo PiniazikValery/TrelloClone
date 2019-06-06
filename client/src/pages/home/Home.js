@@ -7,10 +7,6 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { sort } from '../../actions'
 import { ListContainer } from './HomeStyledComponents';
 
-const mapDispatchToProps = dispatch => ({
-    sort: bindActionCreators(sort, dispatch),
-});
-
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -41,9 +37,6 @@ class Home extends Component {
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <div className="Home">
-                    <p>
-                        This is Home page
-                </p>
                     <Droppable droppableId='all-lists' direction='horizontal' type='list'>
                         {provided => (
                             <ListContainer {...provided.droppableProps} ref={provided.innerRef}>
@@ -61,6 +54,10 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
     lists: state.lists
+});
+
+const mapDispatchToProps = dispatch => ({
+    sort: bindActionCreators(sort, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

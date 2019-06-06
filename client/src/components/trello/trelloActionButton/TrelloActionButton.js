@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Icon from '@material-ui/core/Icon';
-import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addList, addCard } from '../../../actions';
-import { OpenForButtonGroup, ActionButtonTextArea, ActionButtonCard, FormButtonGroup } from './TrelloActionButtonStyledComponents';
+import { OpenForButtonGroup } from './TrelloActionButtonStyledComponents';
+import { TrelloActionForm } from '../trelloActionForm';
 
 const mapDispatchToProps = dispatch => ({
     addList: bindActionCreators(addList, dispatch),
@@ -82,6 +82,7 @@ class TrelloActionButton extends Component {
     closeForm(e) {
         this.setState({
             formOpen: false,
+            text: '',
         });
     }
 
@@ -96,20 +97,14 @@ class TrelloActionButton extends Component {
         const placeholder = list ? 'Enter list title ...' : 'Enter a title for this card ...';
         const buttonTitle = list ? 'Add List' : 'Add Card';
         return (
-            <div>
-                <ActionButtonCard>
-                    <ActionButtonTextArea
-                        placeholder={placeholder}
-                        autoFocus                        
-                        onBlur={this.closeForm}
-                        value={this.state.text}
-                        onChange={this.handleInputChange} />
-                </ActionButtonCard>
-                <FormButtonGroup>
-                    <Button onMouseDown={list ? this.handleAddList : this.handleAddCard} style={{ color: "white", backgroundColor: "#5aac44" }} variant="contained">{buttonTitle}</Button>
-                    <Icon onMouseDown={this.closeForm} style={{ marginLeft: 8, cursor: "pointer" }}>close</Icon>
-                </FormButtonGroup>
-            </div>
+            <TrelloActionForm
+                placeholder={placeholder}
+                onCloseForm={this.closeForm}
+                value={this.state.text}
+                onInputChange={this.handleInputChange}
+                onSaveClick={list ? this.handleAddList : this.handleAddCard}
+                buttonTitle={buttonTitle}
+            />
         );
     }
 
