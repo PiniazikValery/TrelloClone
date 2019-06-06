@@ -104,10 +104,10 @@ const listsReducer = (state = initialState, action) => {
         }
         case CONSTANTS.EDIT_LIST_TITLE: {
             const { listId, title } = action.payload;
-            const list = state.find((list) => {return list.id === listId});
-            const copyList = list;
-            list.title = title;
-            return { ...state, copyList: list };
+            const newState = [...state];
+            const list = state.find((list) => {return list.id === listId});            
+            list.title = title;            
+            return newState;
         }
         default:
             return state;

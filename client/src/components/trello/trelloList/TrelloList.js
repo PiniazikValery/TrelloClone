@@ -34,8 +34,7 @@ class TrelloList extends Component {
         this.setState({
             isEditing: false
         });
-        editListTitle(this.props.listID, this.state.title);
-        console.log(this.props.lists);
+        editListTitle(this.props.listID, this.state.title);        
     }
 
     renderEditTitleInput() {
@@ -65,7 +64,7 @@ class TrelloList extends Component {
                                         this.renderEditTitleInput()
                                     ) : (
                                             <TitleContainer onClick={() => this.setState({ isEditing: true })}>
-                                                <ListTitle>{this.props.lists[1].title}</ListTitle>
+                                                <ListTitle>{this.state.title}</ListTitle>
                                             </TitleContainer>
                                         )}
                                     <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -83,12 +82,8 @@ class TrelloList extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    lists: state.lists
-});
-
 const mapDispatchToProps = dispatch => ({
     editListTitle: bindActionCreators(editListTitle, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrelloList);
+export default connect(undefined, mapDispatchToProps)(TrelloList);
