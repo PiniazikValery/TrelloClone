@@ -5,8 +5,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { TrelloActionForm } from '../trelloActionForm';
 import { Draggable } from 'react-beautiful-dnd';
-import { editCardText } from '../../../actions'
-import { CardContainer, Card } from './TrelloCardStyledComponents';
+import { editCardText, deleteCard } from '../../../actions'
+import { CardContainer, Card, DeleteButton } from './TrelloCardStyledComponents';
 
 class TrelloCard extends Component {
     constructor(props) {
@@ -19,6 +19,7 @@ class TrelloCard extends Component {
         this.closeForm = this.closeForm.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.saveForm = this.saveForm.bind(this);
+        this.deleteCard = this.deleteCard.bind(this);
     }
 
     openForm() {
@@ -47,15 +48,23 @@ class TrelloCard extends Component {
         editCardText(this.props.listId, this.props.id, this.state.cardFromText)
     }
 
+    deleteCard() {
+        const { deleteCard, listId, id } = this.props;        
+        deleteCard(listId, id);
+    }
+
     renderCard() {
         const { lists } = this.props;
         return (
             <Draggable draggableId={String(this.props.id)} index={this.props.index}>
                 {provided => (
                     <CardContainer
-                        onClick={this.openForm}
+                        // onClick={this.openForm}
                         ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Card>
+                            <DeleteButton fontSize="small" onMouseDown={this.deleteCard}>
+                                delete
+                            </DeleteButton>
                             <CardContent>
                                 <Typography color="textSecondary" gutterBottom>
                                     {lists.find(list => list.id === this.props.listId).cards.find(card => card.id === this.props.id).text}
@@ -92,6 +101,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     editCardText: bindActionCreators(editCardText, dispatch),
+    deleteCard: bindActionCreators(deleteCard, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrelloCard);

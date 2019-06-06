@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Icon from "@material-ui/core/Icon";
 import Card from '@material-ui/core/Card';
 
 export const CardContainer = styled.div`   
@@ -16,3 +17,18 @@ const _Card = styled(Card)`
 `
 
 export {_Card as Card};
+
+export const DeleteButton  = styled(Icon)`
+    position: absolute;
+    display: none;
+    right: 1px;
+    top: 1px;
+    opacity: 0.5;
+    ${CardContainer}:hover & {
+    display: block;
+    cursor: pointer;
+    }
+    &:hover {
+        opacity: 0.8;
+    }
+`
