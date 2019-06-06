@@ -10,3 +10,7 @@ export const OpenForButtonGroup = styled.div`
     padding-left: 10px;
     margin: 8px;
 `
+
+export const AddButtonText= styled.p`
+    min-width: 264px;
+`

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editListTitle } from '../../../actions'
+import { editListTitle, deleteList } from '../../../actions'
 import { TrelloCard } from '../trelloCard'
 import { bindActionCreators } from 'redux';
 import { TrelloActionButton } from '../trelloActionButton';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { ListContainer, TitleContainer, StyledInput, ListTitle } from './TrelloListStyledComponents';
+import { ListContainer, TitleContainer, StyledInput, ListTitle, DeleteButton } from './TrelloListStyledComponents';
 
 class TrelloList extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class TrelloList extends Component {
         }
         this.handleFinishEditing = this.handleFinishEditing.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.deleteList = this.deleteList.bind(this);
     }
 
     handleFocus(e) {
@@ -34,7 +35,12 @@ class TrelloList extends Component {
         this.setState({
             isEditing: false
         });
-        editListTitle(this.props.listID, this.state.title);        
+        editListTitle(this.props.listID, this.state.title);
+    }
+
+    deleteList() {
+        const { deleteList, listID } = this.props;
+        deleteList(listID);
     }
 
     renderEditTitleInput() {
@@ -65,6 +71,7 @@ class TrelloList extends Component {
                                     ) : (
                                             <TitleContainer onClick={() => this.setState({ isEditing: true })}>
                                                 <ListTitle>{this.state.title}</ListTitle>
+                                                <DeleteButton onClick={this.deleteList}>delete</DeleteButton>
                                             </TitleContainer>
                                         )}
                                     <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -84,6 +91,7 @@ class TrelloList extends Component {
 
 const mapDispatchToProps = dispatch => ({
     editListTitle: bindActionCreators(editListTitle, dispatch),
+    deleteList: bindActionCreators(deleteList, dispatch),
 });
 
 export default connect(undefined, mapDispatchToProps)(TrelloList);

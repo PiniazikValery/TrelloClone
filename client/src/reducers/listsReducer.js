@@ -115,9 +115,15 @@ const listsReducer = (state = initialState, action) => {
         case CONSTANTS.DELETE_CARD: {
             const { listID, cardID } = action.payload;
             const newState = [...state];
-            const list = state.find((list) => { return list.id === listID });   
+            const list = state.find((list) => { return list.id === listID });
             const newCards = list.cards.filter(card => card.id !== cardID);
             list.cards = newCards;
+            return newState;
+        }
+        case CONSTANTS.DELETE_LIST: {
+            const { listId } = action.payload;
+            let newState = [...state];
+            newState = newState.filter(list => list.id !== listId);
             return newState;
         }
         default:

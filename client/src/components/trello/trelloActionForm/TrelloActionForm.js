@@ -5,7 +5,7 @@ class TrelloActionForm extends Component {
     render() {
         return (
             <div>
-                <ActionButtonCard>
+                <ActionButtonCard >
                     <ActionButtonTextArea
                         placeholder={this.props.placeholder}
                         autoFocus
