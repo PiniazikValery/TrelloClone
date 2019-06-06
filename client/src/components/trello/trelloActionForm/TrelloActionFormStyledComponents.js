@@ -9,7 +9,7 @@ export const ActionButtonCard = styled(Card)`
     min-height: 80px;
     min-width: 272px;
     padding: 6px 8px 2px; 
-    margin-top: 8px;
+    margin-top: 8px;    
 `
 
 export const ActionButtonTextArea = styled(TextArea)`

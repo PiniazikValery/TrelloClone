@@ -3,7 +3,7 @@ import Icon from '@material-ui/core/Icon';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addList, addCard } from '../../../actions';
-import { OpenForButtonGroup } from './TrelloActionButtonStyledComponents';
+import { OpenForButtonGroup, AddButtonText } from './TrelloActionButtonStyledComponents';
 import { TrelloActionForm } from '../trelloActionForm';
 
 const mapDispatchToProps = dispatch => ({
@@ -68,7 +68,7 @@ class TrelloActionButton extends Component {
                     backgroundColor: buttonTextBackground
                 }}>
                 <Icon>add</Icon>
-                <p>{buttonText}</p>
+                <AddButtonText>{buttonText}</AddButtonText>
             </OpenForButtonGroup>
         );
     }
@@ -97,14 +97,16 @@ class TrelloActionButton extends Component {
         const placeholder = list ? 'Enter list title ...' : 'Enter a title for this card ...';
         const buttonTitle = list ? 'Add List' : 'Add Card';
         return (
-            <TrelloActionForm
-                placeholder={placeholder}
-                onCloseForm={this.closeForm}
-                value={this.state.text}
-                onInputChange={this.handleInputChange}
-                onSaveClick={list ? this.handleAddList : this.handleAddCard}
-                buttonTitle={buttonTitle}
-            />
+            <div style={list ? { marginLeft: 8 } : {}}>
+                <TrelloActionForm
+                    placeholder={placeholder}
+                    onCloseForm={this.closeForm}
+                    value={this.state.text}
+                    onInputChange={this.handleInputChange}
+                    onSaveClick={list ? this.handleAddList : this.handleAddCard}
+                    buttonTitle={buttonTitle}
+                />
+            </div>
         );
     }
 

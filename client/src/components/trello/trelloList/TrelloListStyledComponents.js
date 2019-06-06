@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Icon from "@material-ui/core/Icon";
 
 export const ListContainer = styled.div`
     cursor: pointer !important;
@@ -32,4 +33,12 @@ export const StyledInput = styled.input`
 
 export const ListTitle = styled.h4`
   transition: background 0.3s ease-in; 
-`;
+`
+
+export const DeleteButton = styled(Icon)`
+  cursor: pointer;  
+  opacity: 0.5;
+  &:hover {
+    opacity: 0.8;
+  }
+`

@@ -59,10 +59,10 @@ class TrelloCard extends Component {
             <Draggable draggableId={String(this.props.id)} index={this.props.index}>
                 {provided => (
                     <CardContainer
-                        // onClick={this.openForm}
+                        onClick={this.openForm}
                         ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Card>
-                            <DeleteButton fontSize="small" onMouseDown={this.deleteCard}>
+                            <DeleteButton fontSize="small" onClick={this.deleteCard}>
                                 delete
                             </DeleteButton>
                             <CardContent>
