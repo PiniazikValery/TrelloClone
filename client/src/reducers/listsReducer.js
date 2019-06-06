@@ -72,27 +72,23 @@ const listsReducer = (state = initialState, action) => {
                 droppableIdStart,
                 droppableIdEnd,
                 droppableIndexStart,
-                droppableIndexEnd,
-                draggableId,
+                droppableIndexEnd,                
                 type
             } = action.payload;
             const newState = [...state];
-
-            // dragging lists around
+            
             if (type === 'list') {
                 const list = newState.splice(droppableIndexStart, 1);
                 newState.splice(droppableIndexEnd, 0, ...list);
                 return newState;
             }
-
-            // in the same list
+            
             if (droppableIdStart === droppableIdEnd) {
                 const list = state.find(list => droppableIdStart === list.id);
                 const card = list.cards.splice(droppableIndexStart, 1);
                 list.cards.splice(droppableIndexEnd, 0, ...card);
             }
-
-            // other list 
+            
             if (droppableIdStart !== droppableIdEnd) {
                 const listStart = state.find(list => droppableIdStart === list.id);
                 const card = listStart.cards.splice(droppableIndexStart, 1);
@@ -105,8 +101,15 @@ const listsReducer = (state = initialState, action) => {
         case CONSTANTS.EDIT_LIST_TITLE: {
             const { listId, title } = action.payload;
             const newState = [...state];
-            const list = state.find((list) => {return list.id === listId});            
-            list.title = title;            
+            const list = state.find((list) => { return list.id === listId });
+            list.title = title;
+            return newState;
+        }
+        case CONSTANTS.EDIT_CARD_TEXT: {
+            const { listID, cardID, text } = action.payload;
+            const newState = [...state];
+            const card = state.find((list) => { return list.id === listID }).cards.find((card) => { return card.id === cardID });
+            card.text = text;
             return newState;
         }
         default:
