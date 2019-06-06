@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Icon from '@material-ui/core/Icon';
-import TextArea from 'react-textarea-autosize';
-import Card from '@material-ui/core/Card'
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -102,14 +100,14 @@ class TrelloActionButton extends Component {
                 <ActionButtonCard>
                     <ActionButtonTextArea
                         placeholder={placeholder}
-                        autoFocus
+                        autoFocus                        
                         onBlur={this.closeForm}
                         value={this.state.text}
                         onChange={this.handleInputChange} />
                 </ActionButtonCard>
                 <FormButtonGroup>
                     <Button onMouseDown={list ? this.handleAddList : this.handleAddCard} style={{ color: "white", backgroundColor: "#5aac44" }} variant="contained">{buttonTitle}</Button>
-                    <Icon style={{ marginLeft: 8, cursor: "pinter" }}>close</Icon>
+                    <Icon onMouseDown={this.closeForm} style={{ marginLeft: 8, cursor: "pointer" }}>close</Icon>
                 </FormButtonGroup>
             </div>
         );
