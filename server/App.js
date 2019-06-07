@@ -8,6 +8,7 @@ const config = require('./config');
 const app = express();
 const port = process.env.PORT || config.get('port');
 const authRoutes = require('./api/routes/auth');
+const boardRoutes = require('./api/routes/board');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -38,4 +39,5 @@ db.once('open', () => {
 });
 
 app.use('/user', authRoutes);
+app.use('/boards', boardRoutes);
 app.listen(port, () => console.log(`Listening on port ${port}`));

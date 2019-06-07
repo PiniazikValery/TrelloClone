@@ -3,7 +3,6 @@ const router = express.Router();
 const authApiController = require('../../controllers/authController');
 const passportGoogle = require('../../../passportStrategies/googleStrategy');
 const config = require('../../../config');
-const authMiddleware = require('../../middlewares/authentication');
 
 router.post('/register', authApiController.registerUser);
 router.post('/login', authApiController.loginUser, authApiController.successLogin);
