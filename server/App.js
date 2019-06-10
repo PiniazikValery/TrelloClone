@@ -8,6 +8,9 @@ const config = require('./config');
 const app = express();
 const port = process.env.PORT || config.get('port');
 const authRoutes = require('./api/routes/auth');
+const boardRoutes = require('./api/routes/board');
+const listRoutes = require('./api/routes/list');
+const cardRoutes = require('./api/routes/card');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -38,4 +41,7 @@ db.once('open', () => {
 });
 
 app.use('/user', authRoutes);
+app.use('/board', boardRoutes);
+app.use('/list', listRoutes);
+app.use('/card', cardRoutes);
 app.listen(port, () => console.log(`Listening on port ${port}`));

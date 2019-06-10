@@ -33,14 +33,14 @@ class Home extends Component {
     }
 
     render() {
-        const { lists } = this.props;
+        const { board } = this.props;
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <div className="Home">
                     <Droppable droppableId='all-lists' direction='horizontal' type='list'>
                         {provided => (
                             <ListContainer {...provided.droppableProps} ref={provided.innerRef}>
-                                {lists.map((list, index) => <TrelloList listID={list.id} key={list.id} title={list.title} cards={list.cards} index={index} />)}
+                                {board.lists.map((list, index) => <TrelloList listID={list.id} key={list.id} title={list.title} cards={list.cards} index={index} />)}
                                 {provided.placeholder}
                                 <TrelloActionButton list />
                             </ListContainer>
@@ -53,7 +53,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-    lists: state.lists
+    board: state.board
 });
 
 const mapDispatchToProps = dispatch => ({
