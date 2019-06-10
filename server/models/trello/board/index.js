@@ -1,12 +1,26 @@
 const mongoose = require('mongoose');
+const List = require('../list');
+const async = require('async');
 
 const BoardSchema = new mongoose.Schema({
-    name: String,
-    owner: mongoose.Schema.Types.ObjectId,
-    lists: [{
-        listId: mongoose.Schema.Types.ObjectId
+    boardName: String,
+    users: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }],
-    updated_at: { type: Date, default: Date.now },
+    lists: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'List'
+    }],
+}, { versionKey: false });
+
+BoardSchema.pre('remove', { query: true }, function deleteLists(nextAction) {
+    async.each(this.lists, function (listId, next) {
+        List.findById(listId).exec((err, list) => {
+            list.remove();
+            next();
+        });
+    }, () => { nextAction() });
 });
 
 module.exports = mongoose.model('Board', BoardSchema);

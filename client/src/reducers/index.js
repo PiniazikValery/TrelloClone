@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import listsReducer from './listsReducer';
+import boardReducer from './boardReducer';
 
 export default combineReducers({
-    lists: listsReducer
+    board: boardReducer
 });

@@ -96,7 +96,7 @@ class TrelloCard extends Component {
 }
 
 const mapStateToProps = state => ({
-    lists: state.lists
+    lists: state.board.lists
 });
 
 const mapDispatchToProps = dispatch => ({
