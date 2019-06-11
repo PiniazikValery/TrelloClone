@@ -2,15 +2,15 @@ import React from 'react';
 import { Home } from '../pages/home';
 import { Switch, Redirect } from 'react-router-dom';
 import { AuthRoutes } from './authRoutes';
-import ProtectedRoute from './ProtectedRoute';
+import { PrivateRoute, RequireAuth } from './routesProtection';
 
 export const Routes = () => {
     return (
         <Switch>
-            <ProtectedRoute exact path="/home" component={Home} />
-            <ProtectedRoute exact path="/">
+            <PrivateRoute exact path="/home" component={RequireAuth(Home)} />
+            <PrivateRoute exact path="/">
                 <Redirect to="/home" />
-            </ProtectedRoute>
+            </PrivateRoute>
             <AuthRoutes />
         </Switch>
     );

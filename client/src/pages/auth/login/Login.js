@@ -15,8 +15,8 @@ class Login extends Component {
         this.onLogin = this.onLogin.bind(this);
     }
 
-    componentDidMount() {
-        if (Cookies.get('isAuthenticated')) {
+    componentDidMount() {        
+        if (Cookies.get('isAuthenticated') === 'true') {
             this.props.history.push('/home');
         }
     }

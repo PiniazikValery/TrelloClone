@@ -11,5 +11,6 @@ router.get('/auth/google/callback', passportGoogle.authenticate('google', {
     failureRedirect: `${config.get('clientAddress')}/user/login`
 }), authApiController.successSocialLogin);
 router.get('/failurelogin', authApiController.failureLogin);
+router.get('/isauthenticated', authApiController.is_user_authenticated);
 
 module.exports = router;
