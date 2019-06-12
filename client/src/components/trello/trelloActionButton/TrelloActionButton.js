@@ -29,7 +29,7 @@ class TrelloActionButton extends Component {
             this.setState({
                 text: ''
             });
-            axios.post('/list/', {
+            axios.post('/api/list/', {
                 listTitle: text,
                 boardId: this.props.board._id
             })

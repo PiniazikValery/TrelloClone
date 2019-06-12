@@ -42,7 +42,7 @@ class TrelloBoard extends Component {
     }
 
     saveForm() {
-        axios.put(`/board/${this.state.boardId}`, {
+        axios.put(`/api/board/${this.state.boardId}`, {
             boardName: this.state.formBoardName
         })
             .then(() => {

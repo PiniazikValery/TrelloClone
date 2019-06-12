@@ -40,8 +40,8 @@ db.once('open', () => {
   console.log('Server is connected to data base');
 });
 
-app.use('/user', authRoutes);
-app.use('/board', boardRoutes);
-app.use('/list', listRoutes);
-app.use('/card', cardRoutes);
+app.use('/api/user', authRoutes);
+app.use('/api/board', boardRoutes);
+app.use('/api/list', listRoutes);
+app.use('/api/card', cardRoutes);
 app.listen(port, () => console.log(`Listening on port ${port}`));

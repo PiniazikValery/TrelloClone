@@ -43,7 +43,7 @@ class Register extends Component {
     }
 
     handleSubmit() {
-        axios.post('/user/register', {
+        axios.post('/api/user/register', {
             email: this.state.email,
             name: this.state.name,
             password: this.state.password,
