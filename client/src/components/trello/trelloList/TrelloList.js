@@ -75,7 +75,7 @@ class TrelloList extends Component {
                                             </TitleContainer>
                                         )}
                                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                                        {this.props.cards.map((card, index) => <TrelloCard listId={this.props.listID} index={index} id={card.id} key={card.id} text={card.text} />)}
+                                        {this.props.cards.map((card, index) => <TrelloCard listId={this.props.listID} index={index} _id={card._id} key={card._id} text={card.text} />)}
                                         {provided.placeholder}
                                         <TrelloActionButton listID={this.props.listID} />
                                     </div>

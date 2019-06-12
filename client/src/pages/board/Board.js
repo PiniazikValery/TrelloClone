@@ -4,10 +4,11 @@ import { bindActionCreators } from 'redux';
 import { TrelloActionButton } from '../../components/trello/trelloActionButton';
 import { TrelloList } from '../../components/trello/trelloList'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { sort } from '../../actions'
-import { ListContainer } from './HomeStyledComponents';
+import { sort, initBoard } from '../../actions'
+import { ListContainer } from './BoardStyledComponents';
+import axios from 'axios';
 
-class Home extends Component {
+class Board extends Component {
     constructor(props) {
         super(props);
         this.onDragEnd = this.onDragEnd.bind(this);
@@ -32,6 +33,14 @@ class Home extends Component {
         );
     }
 
+    componentDidMount() {
+        const { initBoard } = this.props;
+        axios.get(`/board/${this.props.match.params.id}`)
+            .then(res => {
+                initBoard(res.data.board);
+            })
+    }
+
     render() {
         const { board } = this.props;
         return (
@@ -40,7 +49,7 @@ class Home extends Component {
                     <Droppable droppableId='all-lists' direction='horizontal' type='list'>
                         {provided => (
                             <ListContainer {...provided.droppableProps} ref={provided.innerRef}>
-                                {board.lists.map((list, index) => <TrelloList listID={list.id} key={list.id} title={list.title} cards={list.cards} index={index} />)}
+                                {board.lists.map((list, index) => <TrelloList listID={list._id} key={list._id} title={list.title} cards={list.cards} index={index} />)}
                                 {provided.placeholder}
                                 <TrelloActionButton list />
                             </ListContainer>
@@ -58,6 +67,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     sort: bindActionCreators(sort, dispatch),
+    initBoard: bindActionCreators(initBoard, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

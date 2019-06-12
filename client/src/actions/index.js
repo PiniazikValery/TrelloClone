@@ -1,7 +1,9 @@
 export * from './listsActions';
 export * from './cardsActions';
+export * from './boardActions';
 
 export const CONSTANTS = {
+    INIT_BOARD: 'INIT_BOARD',
     ADD_CARD: 'ADD_CARD',
     DELETE_CARD: 'DELETE_CARD',
     EDIT_CARD_TEXT: 'EDIT_CARD_TEXT',

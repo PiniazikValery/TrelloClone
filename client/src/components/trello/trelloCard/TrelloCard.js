@@ -30,7 +30,7 @@ class TrelloCard extends Component {
 
     closeForm() {
         const { lists } = this.props;
-        const cardTextFromReducer = lists.find(list => list.id === this.props.listId).cards.find(card => card.id === this.props.id).text;
+        const cardTextFromReducer = lists.find(list => list._id === this.props.listId).cards.find(card => card._id === this.props._id).text;
         this.setState({
             formOpen: false,
             cardFromText: cardTextFromReducer
@@ -45,18 +45,18 @@ class TrelloCard extends Component {
 
     saveForm() {
         const { editCardText } = this.props;
-        editCardText(this.props.listId, this.props.id, this.state.cardFromText)
+        editCardText(this.props.listId, this.props._id, this.state.cardFromText)
     }
 
     deleteCard() {
-        const { deleteCard, listId, id } = this.props;        
-        deleteCard(listId, id);
+        const { deleteCard, listId, _id } = this.props;
+        deleteCard(listId, _id);
     }
 
     renderCard() {
         const { lists } = this.props;
         return (
-            <Draggable draggableId={String(this.props.id)} index={this.props.index}>
+            <Draggable draggableId={String(this.props._id)} index={this.props.index}>
                 {provided => (
                     <CardContainer
                         onClick={this.openForm}
@@ -67,7 +67,7 @@ class TrelloCard extends Component {
                             </DeleteButton>
                             <CardContent>
                                 <Typography color="textSecondary" gutterBottom>
-                                    {lists.find(list => list.id === this.props.listId).cards.find(card => card.id === this.props.id).text}
+                                    {lists.find(list => list._id === this.props.listId).cards.find(card => card._id === this.props._id).text}
                                 </Typography>
                             </CardContent>
                         </Card>

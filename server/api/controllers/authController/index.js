@@ -2,6 +2,18 @@ const User = require('../../../models/account/user');
 const passportLocal = require('../../../passportStrategies/localStrategy');
 const config = require('../../../config');
 
+exports.is_user_authenticated = (req, res) => {
+    if (req.isAuthenticated()) {
+        res.status(200).json({
+            message: 'User is authenticated'
+        });
+    } else {
+        res.status(403).json({
+            error: 'Authentication needed'
+        });
+    }
+};
+
 exports.registerUser = (req, res) => {
     const { email, name, password, password2 } = req.body;
     let errors = [];
