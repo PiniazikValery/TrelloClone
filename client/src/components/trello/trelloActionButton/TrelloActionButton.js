@@ -33,7 +33,7 @@ class TrelloActionButton extends Component {
                 listTitle: text,
                 boardId: this.props.board._id
             })
-                .then(() => addList(text));
+                .then(res => addList(text, res.data.list._id));
         }
 
         return;

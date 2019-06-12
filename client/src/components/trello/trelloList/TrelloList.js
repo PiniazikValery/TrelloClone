@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { TrelloActionButton } from '../trelloActionButton';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { ListContainer, TitleContainer, StyledInput, ListTitle, DeleteButton } from './TrelloListStyledComponents';
+import axios from 'axios';
 
 class TrelloList extends Component {
     constructor(props) {
@@ -40,7 +41,8 @@ class TrelloList extends Component {
 
     deleteList() {
         const { deleteList, listID } = this.props;
-        deleteList(listID);
+        axios.delete(`/list/${listID}`)
+            .then(() => deleteList(listID));
     }
 
     renderEditTitleInput() {
@@ -69,8 +71,8 @@ class TrelloList extends Component {
                                     {this.state.isEditing ? (
                                         this.renderEditTitleInput()
                                     ) : (
-                                            <TitleContainer onClick={() => this.setState({ isEditing: true })}>
-                                                <ListTitle>{this.state.title}</ListTitle>
+                                            <TitleContainer>
+                                                <ListTitle onClick={() => this.setState({ isEditing: true })}>{this.state.title}</ListTitle>
                                                 <DeleteButton onClick={this.deleteList}>delete</DeleteButton>
                                             </TitleContainer>
                                         )}
