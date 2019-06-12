@@ -9,10 +9,21 @@ const _Card = styled(Card)`
     min-width: 288px; 
     max-width: 288px;    
     position: relative;
+    &:hover{
+        background-color: rgba(109,130,166,.08);
+    } 
 `
 
 const _Typography = styled(Typography)`
     font-size: 20px;
+`
+
+export const BoardContainer = styled.div`   
+    cursor: pointer !important;
+    margin-bottom: 8px; 
+    position: relative;
+    max-width: 100%;
+    word-wrap: break-word;    
 `
 
 export const DeleteButton = styled(Icon)`
@@ -21,7 +32,7 @@ export const DeleteButton = styled(Icon)`
     right: 1px;
     top: 5px;
     opacity: 0.5;
-    ${_Card}:hover & {
+    ${BoardContainer}:hover & {
     display: block;
     cursor: pointer;
     }
@@ -36,7 +47,7 @@ export const EditButton = styled(Icon)`
     right: 1px;
     bottom: 5px;
     opacity: 0.5;
-    ${_Card}:hover & {
+    ${BoardContainer}:hover & {
     display: block;
     cursor: pointer;
     }

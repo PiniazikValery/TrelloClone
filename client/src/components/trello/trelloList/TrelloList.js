@@ -36,7 +36,10 @@ class TrelloList extends Component {
         this.setState({
             isEditing: false
         });
-        editListTitle(this.props.listID, this.state.title);
+        axios.put(`/list/${this.props.listID}`, {
+            listTitle: this.state.title
+        })
+            .then(() => editListTitle(this.props.listID, this.state.title));
     }
 
     deleteList() {
