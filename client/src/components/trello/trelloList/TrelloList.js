@@ -36,7 +36,7 @@ class TrelloList extends Component {
         this.setState({
             isEditing: false
         });
-        axios.put(`/list/${this.props.listID}`, {
+        axios.put(`/api/list/${this.props.listID}`, {
             listTitle: this.state.title
         })
             .then(() => editListTitle(this.props.listID, this.state.title));
@@ -44,7 +44,7 @@ class TrelloList extends Component {
 
     deleteList() {
         const { deleteList, listID } = this.props;
-        axios.delete(`/list/${listID}`)
+        axios.delete(`/api/list/${listID}`)
             .then(() => deleteList(listID));
     }
 

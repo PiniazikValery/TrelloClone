@@ -15,12 +15,12 @@ class AvaliableBoards extends Component {
     }
 
     componentDidMount() {
-        axios.get('/board/avaliable')
+        axios.get('/api/board/avaliable')
             .then(result => this.setState({ boards: result.data }))
     }
 
     deleteBoard(boardId) {
-        axios.delete(`/board/${boardId}`)
+        axios.delete(`/api/board/${boardId}`)
             .then(() => {
                 const updatedBoards = this.state.boards.filter(board => board._id !== boardId);
                 this.setState({
@@ -30,7 +30,7 @@ class AvaliableBoards extends Component {
     }
 
     createBoard(boardName) {
-        axios.post('/board/', {
+        axios.post('/api/board/', {
             boardName
         })
             .then((res) => {

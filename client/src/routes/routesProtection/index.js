@@ -20,7 +20,7 @@ const source = CancelToken.source();
 const RequireAuth = (Page) => {
     return class App extends Component {
         componentDidMount() {
-            axios.get('/user/isauthenticated', {
+            axios.get('/api/user/isauthenticated', {
                 cancelToken: source.token
             })
                 .then(() => this.setState({ isAuthenticated: true }))

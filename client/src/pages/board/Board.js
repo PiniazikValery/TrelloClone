@@ -35,7 +35,7 @@ class Board extends Component {
 
     componentDidMount() {
         const { initBoard } = this.props;
-        axios.get(`/board/${this.props.match.params.id}`)
+        axios.get(`/api/board/${this.props.match.params.id}`)
             .then(res => {
                 initBoard(res.data.board);
             })

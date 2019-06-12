@@ -27,7 +27,7 @@ class Login extends Component {
     }
 
     onLogin() {
-        axios.post('/user/login', {
+        axios.post('/api/user/login', {
             email: this.state.email,
             password: this.state.password,
         })
@@ -55,7 +55,7 @@ class Login extends Component {
                     </li>
                 </ul>
                 <button onClick={this.onLogin} >Login user</button>
-                <a href="http://localhost:5000/user/auth/google">
+                <a href="http://localhost:5000/api/user/auth/google">
                     <button>Login via google</button>
                 </a>
             </div>
