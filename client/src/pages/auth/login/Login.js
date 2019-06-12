@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 class Login extends Component {
     constructor(props) {
@@ -13,12 +12,6 @@ class Login extends Component {
         this.handleEmailTyping = this.handleEmailTyping.bind(this);
         this.handlePasswordTyping = this.handlePasswordTyping.bind(this);
         this.onLogin = this.onLogin.bind(this);
-    }
-
-    componentDidMount() {        
-        if (Cookies.get('isAuthenticated') === 'true') {
-            this.props.history.push('/home');
-        }
     }
 
     handleEmailTyping(event) {

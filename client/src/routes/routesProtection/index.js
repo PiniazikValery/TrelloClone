@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 export const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => (
         (Cookies.get('isAuthenticated') === 'false')
-            ? <Redirect to="user/login" />
+            ? <Redirect to="/user/login" />
             : <Component {...props} />
     )} />
 );
@@ -25,11 +25,9 @@ const RequireAuth = (Page) => {
             })
                 .then(() => this.setState({ isAuthenticated: true }))
                 .catch((thrown) => {
-                    if (axios.isCancel(thrown)) {
-                        console.log('Is user authenticated request сanceled', thrown.message);
-                    } else {
+                    if (!axios.isCancel(thrown)) {
                         Cookies.set('isAuthenticated', false);
-                        this.props.history.push('user/login');
+                        this.props.history.push('/user/login');
                     }
                 });
         }
@@ -38,7 +36,7 @@ const RequireAuth = (Page) => {
             source.cancel();
         }
         render() {
-            return (<Page />);
+            return (<Page match={this.props.match} history={this.props.history} />);
         }
     }
 }

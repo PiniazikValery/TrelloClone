@@ -97,7 +97,7 @@ class TrelloActionButton extends Component {
         const placeholder = list ? 'Enter list title ...' : 'Enter a title for this card ...';
         const buttonTitle = list ? 'Add List' : 'Add Card';
         return (
-            <div style={list ? { marginLeft: 8 } : {}}>
+            <div style={list ? { marginLeft: 8, paddingRight: 10 } : {}}>
                 <TrelloActionForm
                     placeholder={placeholder}
                     onCloseForm={this.closeForm}

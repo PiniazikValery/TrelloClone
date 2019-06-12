@@ -1,5 +1,6 @@
 import React from 'react';
-import { Home } from '../pages/home';
+import { Board } from '../pages/board';
+import { AvaliableBoards } from '../pages/availableBoards';
 import { Switch, Redirect } from 'react-router-dom';
 import { AuthRoutes } from './authRoutes';
 import { PrivateRoute, RequireAuth } from './routesProtection';
@@ -7,7 +8,8 @@ import { PrivateRoute, RequireAuth } from './routesProtection';
 export const Routes = () => {
     return (
         <Switch>
-            <PrivateRoute exact path="/home" component={RequireAuth(Home)} />
+            <PrivateRoute exact path="/board/:id" component={RequireAuth(Board)} />
+            <PrivateRoute exact path="/home" component={RequireAuth(AvaliableBoards)} />
             <PrivateRoute exact path="/">
                 <Redirect to="/home" />
             </PrivateRoute>
