@@ -5,11 +5,7 @@ import { bindActionCreators } from 'redux';
 import { addList, addCard } from '../../../actions';
 import { OpenForButtonGroup, AddButtonText } from './TrelloActionButtonStyledComponents';
 import { TrelloActionForm } from '../trelloActionForm';
-
-const mapDispatchToProps = dispatch => ({
-    addList: bindActionCreators(addList, dispatch),
-    addCard: bindActionCreators(addCard, dispatch),
-});
+import axios from 'axios';
 
 class TrelloActionButton extends Component {
     constructor(props) {
@@ -33,7 +29,11 @@ class TrelloActionButton extends Component {
             this.setState({
                 text: ''
             });
-            addList(text);
+            axios.post('/list/', {
+                listTitle: text,
+                boardId: this.props.board._id
+            })
+                .then(() => addList(text));
         }
 
         return;
@@ -115,4 +115,13 @@ class TrelloActionButton extends Component {
     }
 }
 
-export default connect(undefined, mapDispatchToProps)(TrelloActionButton);
+const mapDispatchToProps = dispatch => ({
+    addList: bindActionCreators(addList, dispatch),
+    addCard: bindActionCreators(addCard, dispatch),
+});
+
+const mapStateToProps = state => ({
+    board: state.board
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrelloActionButton);
