@@ -24,7 +24,7 @@ export const StyledInput = styled.input`
   width: 100%;  
   border: none;
   margin-top: 1.33em;
-  margin-bottom: 1.33em;
+  margin-bottom: 1.33em;  
   outline-color: blue;
   border-radius: 3px;
   padding-bottom: 5px;
@@ -35,7 +35,7 @@ export const ListTitle = styled.h4`
   transition: background 0.3s ease-in; 
 `
 
-export const DeleteButton = styled(Icon)`
+export const DeleteButton = styled(Icon)`  
   cursor: pointer;  
   opacity: 0.5;
   &:hover {
