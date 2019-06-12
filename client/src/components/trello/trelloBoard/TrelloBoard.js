@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Typography, DeleteButton, EditButton, TrelloActionFormContainer } from './TrelloBoardStyledComponents';
+import { Card, Typography, DeleteButton, EditButton, TrelloActionFormContainer, BoardContainer } from './TrelloBoardStyledComponents';
 import { TrelloActionForm } from '../trelloActionForm';
 import axios from 'axios';
 import CardContent from '@material-ui/core/CardContent';
@@ -21,6 +21,7 @@ class TrelloBoard extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.deleteBoard = this.deleteBoard.bind(this);
         this.openBoard = this.openBoard.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     openForm() {
@@ -61,21 +62,37 @@ class TrelloBoard extends Component {
         this.props.history.push(`/board/${this.state.boardId}`)
     }
 
+    onClick(e) {
+        switch (true) {
+            case e.target.id === 'delete':
+                this.deleteBoard();
+                break;
+            case e.target.id === 'edit':
+                this.openForm();
+                break;
+            default:
+                this.openBoard();
+                break;
+        }
+    }
+
     renderBoard() {
         return (
-            <Card onClick={this.openBoard}>
-                <DeleteButton fontSize="small" onClick={this.deleteBoard}>
-                    delete
+            <BoardContainer onClick={this.onClick}>
+                <Card>
+                    <DeleteButton fontSize="small" id="delete">
+                        delete
                 </DeleteButton>
-                <EditButton fontSize="small" onClick={this.openForm}>
-                    edit
+                    <EditButton fontSize="small" id="edit">
+                        edit
                 </EditButton>
-                <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                        {this.state.boardName}
-                    </Typography>
-                </CardContent>
-            </Card>
+                    <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                            {this.state.boardName}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </BoardContainer>
         );
     }
 
