@@ -47,7 +47,10 @@ class TrelloActionButton extends Component {
             this.setState({
                 text: ''
             });
-            addCard(this.props.listID, text);
+            axios.post('/api/card', {
+                cardText: text,
+                listId: this.props.listID
+            }).then(res => addCard(this.props.listID, res.data.card._id, text));
         }
 
         return;

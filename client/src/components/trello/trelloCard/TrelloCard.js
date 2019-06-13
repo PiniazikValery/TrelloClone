@@ -7,14 +7,15 @@ import { TrelloActionForm } from '../trelloActionForm';
 import { Draggable } from 'react-beautiful-dnd';
 import { editCardText, deleteCard } from '../../../actions'
 import { CardContainer, Card, DeleteButton } from './TrelloCardStyledComponents';
+import axios from 'axios';
 
 class TrelloCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             formOpen: false,
-            cardFromText: this.props.text
-        }
+            formText: this.props.cards[this.props.cardId].text
+        };
         this.openForm = this.openForm.bind(this);
         this.closeForm = this.closeForm.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -22,52 +23,53 @@ class TrelloCard extends Component {
         this.deleteCard = this.deleteCard.bind(this);
     }
 
-    openForm() {
-        this.setState({
-            formOpen: true
-        });
+    openForm(e) {
+        if (e.target.id !== 'deleteCard') {
+            this.setState({
+                formOpen: true
+            });
+        }
     }
 
     closeForm() {
-        const { lists } = this.props;
-        const cardTextFromReducer = lists.find(list => list._id === this.props.listId).cards.find(card => card._id === this.props._id).text;
         this.setState({
-            formOpen: false,
-            cardFromText: cardTextFromReducer
+            formOpen: false
         });
     }
 
     handleInputChange(e) {
         this.setState({
-            cardFromText: e.target.value,
+            formText: e.target.value,
         });
     }
 
     saveForm() {
-        const { editCardText } = this.props;
-        editCardText(this.props.listId, this.props._id, this.state.cardFromText)
+        axios.put(`/api/card/${this.props.cardId}`, {
+            cardTitle: this.state.formText
+        })
+            .then(() => this.props.editCardText(this.props.listId, this.props.cardId, this.state.formText));
     }
 
     deleteCard() {
-        const { deleteCard, listId, _id } = this.props;
-        deleteCard(listId, _id);
+        axios.delete(`/api/card/${this.props.cardId}`)
+            .then(() => this.props.deleteCard(this.props.listId, this.props.cardId));
     }
 
     renderCard() {
-        const { lists } = this.props;
+        const { text } = this.props.cards[this.props.cardId];
         return (
-            <Draggable draggableId={String(this.props._id)} index={this.props.index}>
+            <Draggable draggableId={String(this.props.cardId)} index={this.props.index}>
                 {provided => (
                     <CardContainer
                         onClick={this.openForm}
                         ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Card>
-                            <DeleteButton fontSize="small" onClick={this.deleteCard}>
+                            <DeleteButton id="deleteCard" fontSize="small" onClick={this.deleteCard}>
                                 delete
                             </DeleteButton>
                             <CardContent>
                                 <Typography color="textSecondary" gutterBottom>
-                                    {lists.find(list => list._id === this.props.listId).cards.find(card => card._id === this.props._id).text}
+                                    {text}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -82,7 +84,7 @@ class TrelloCard extends Component {
             <TrelloActionForm
                 placeholder={'Enter a title for this card ...'}
                 onCloseForm={this.closeForm}
-                value={this.state.cardFromText}
+                value={this.state.formText}
                 onInputChange={this.handleInputChange}
                 onSaveClick={this.saveForm}
                 buttonTitle={'Save'}
@@ -96,7 +98,7 @@ class TrelloCard extends Component {
 }
 
 const mapStateToProps = state => ({
-    lists: state.board.lists
+    cards: state.cards
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -12,11 +12,11 @@ class TrelloList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: this.props.title,
+            formTitle: this.props.lists[this.props.listID].title,
             isEditing: false,
         }
-        this.handleFinishEditing = this.handleFinishEditing.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleFinishEditing = this.handleFinishEditing.bind(this);
         this.deleteList = this.deleteList.bind(this);
     }
 
@@ -27,25 +27,23 @@ class TrelloList extends Component {
     handleChange(e) {
         e.preventDefault();
         this.setState({
-            title: e.target.value
+            formTitle: e.target.value
         });
     }
 
     handleFinishEditing() {
-        const { editListTitle } = this.props;
         this.setState({
             isEditing: false
         });
         axios.put(`/api/list/${this.props.listID}`, {
-            listTitle: this.state.title
+            listTitle: this.state.formTitle
         })
-            .then(() => editListTitle(this.props.listID, this.state.title));
+            .then(() => this.props.editListTitle(this.props.listID, this.state.formTitle));
     }
 
     deleteList() {
-        const { deleteList, listID } = this.props;
-        axios.delete(`/api/list/${listID}`)
-            .then(() => deleteList(listID));
+        axios.delete(`/api/list/${this.props.listID}`)
+            .then(() => this.props.deleteList(this.props.listID));
     }
 
     renderEditTitleInput() {
@@ -53,7 +51,7 @@ class TrelloList extends Component {
             <form onSubmit={this.handleFinishEditing}>
                 <StyledInput
                     type="text"
-                    value={this.state.title}
+                    value={this.state.formTitle}
                     onChange={this.handleChange}
                     autoFocus
                     onFocus={this.handleFocus}
@@ -64,6 +62,7 @@ class TrelloList extends Component {
     }
 
     render() {
+        const { title, cards } = this.props.lists[this.props.listID];
         return (
             <Draggable draggableId={String(this.props.listID)} index={this.props.index}>
                 {provided => (
@@ -75,12 +74,12 @@ class TrelloList extends Component {
                                         this.renderEditTitleInput()
                                     ) : (
                                             <TitleContainer>
-                                                <ListTitle onClick={() => this.setState({ isEditing: true })}>{this.state.title}</ListTitle>
+                                                <ListTitle onClick={() => this.setState({ isEditing: true })}>{title}</ListTitle>
                                                 <DeleteButton onClick={this.deleteList}>delete</DeleteButton>
                                             </TitleContainer>
                                         )}
                                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                                        {this.props.cards.map((card, index) => <TrelloCard listId={this.props.listID} index={index} _id={card._id} key={card._id} text={card.text} />)}
+                                        {cards.map((card, index) => <TrelloCard index={index} cardId={card} key={card} listId={this.props.listID} />)}
                                         {provided.placeholder}
                                         <TrelloActionButton listID={this.props.listID} />
                                     </div>
@@ -99,4 +98,8 @@ const mapDispatchToProps = dispatch => ({
     deleteList: bindActionCreators(deleteList, dispatch),
 });
 
-export default connect(undefined, mapDispatchToProps)(TrelloList);
+const mapStateToProps = state => ({
+    lists: state.lists
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrelloList);
