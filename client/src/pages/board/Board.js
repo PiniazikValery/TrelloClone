@@ -21,16 +21,24 @@ class Board extends Component {
 
         if (!destination) {
             return;
+        } else {
+            axios.put('/api/board/drag', {
+                boardId: this.props.board._id,
+                type: type,
+                droppableIndexStart: source.index,
+                droppableIndexEnd: destination.index,
+                droppableIdStart: source.droppableId,
+                droppableIdEnd: destination.droppableId
+            });
+            sort(
+                source.droppableId,
+                destination.droppableId,
+                source.index,
+                destination.index,
+                draggableId,
+                type
+            );
         }
-
-        sort(
-            source.droppableId,
-            destination.droppableId,
-            source.index,
-            destination.index,
-            draggableId,
-            type
-        );
     }
 
     componentDidMount() {
@@ -49,7 +57,7 @@ class Board extends Component {
                     <Droppable droppableId='all-lists' direction='horizontal' type='list'>
                         {provided => (
                             <ListContainer {...provided.droppableProps} ref={provided.innerRef}>
-                                {board.lists.map((list, index) => <TrelloList listID={list._id} key={list._id} title={list.title} cards={list.cards} index={index} />)}
+                                {board.lists.map((list, index) => <TrelloList listID={list} key={list} index={index} />)}
                                 {provided.placeholder}
                                 <TrelloActionButton list />
                             </ListContainer>
