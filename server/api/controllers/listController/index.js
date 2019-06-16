@@ -108,7 +108,7 @@ exports.createList = (req, res) => {
                         if (board) {
                             List.findByIdAndUpdate(list.id, { $set: { users: board.users } })
                                 .then(updatedList => {
-                                    updatedList.users.push(board.users);
+                                    updatedList.users = board.users;
                                     res.status(201).json({
                                         message: `List with title ${listTitle} has been created`,
                                         list: updatedList

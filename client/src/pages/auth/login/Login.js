@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { Paper, Avatar, Form, Button, Link, GoogleLoginButtonWrapper } from './LoginStyledComponents';
 import { GoogleLoginButton } from '../../../components/google/loginButton'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { showNotification } from '../../../actions'
 import axios from 'axios';
 
 class Login extends Component {
@@ -21,6 +24,7 @@ class Login extends Component {
         this.handlePasswordTyping = this.handlePasswordTyping.bind(this);
         this.onLogin = this.onLogin.bind(this);
         this.goToRegisterPage = this.goToRegisterPage.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     handleEmailTyping(event) {
@@ -42,7 +46,16 @@ class Login extends Component {
         })
             .then(() => {
                 this.props.history.push('/home')
+            })
+            .catch(() => {
+                this.props.showNotification('Wrong email or password', 'error', 6000);
             });
+    }
+
+    handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            this.onLogin();
+        }
     }
 
     goToRegisterPage() {
@@ -62,6 +75,7 @@ class Login extends Component {
                     </Typography>
                     <Form noValidate>
                         <TextField
+                            onKeyPress={this.handleKeyPress}
                             variant="outlined"
                             margin="normal"
                             onChange={this.handleEmailTyping}
@@ -74,6 +88,7 @@ class Login extends Component {
                             autoFocus
                         />
                         <TextField
+                            onKeyPress={this.handleKeyPress}
                             variant="outlined"
                             margin="normal"
                             onChange={this.handlePasswordTyping}
@@ -114,4 +129,8 @@ class Login extends Component {
     }
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => ({
+    showNotification: bindActionCreators(showNotification, dispatch),
+});
+
+export default connect(undefined, mapDispatchToProps)(Login);

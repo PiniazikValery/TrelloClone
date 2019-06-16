@@ -74,7 +74,7 @@ exports.createCard = (req, res) => {
                         if (list) {
                             Card.findByIdAndUpdate(card.id, { $set: { users: list.users } })
                                 .then(updatedCard => {
-                                    updatedCard.users.push(list.users);
+                                    updatedCard.users = list.users;
                                     res.status(201).json({
                                         message: `Card with text ${cardText} has been created`,
                                         card: updatedCard
