@@ -6,12 +6,12 @@ import Typography from '@material-ui/core/Typography';
 const _Card = styled(Card)`
     cursor: pointer;
     margin: 10px;
-    min-width: 288px; 
-    max-width: 288px;    
+    min-width: 298px;
+    max-width: 298px;
     position: relative;
     &:hover{
         background-color: rgba(109,130,166,.08);
-    } 
+    }
 `
 
 const _Typography = styled(Typography)`
@@ -20,10 +20,10 @@ const _Typography = styled(Typography)`
 
 export const BoardContainer = styled.div`   
     cursor: pointer !important;
-    margin-bottom: 8px; 
+    margin-bottom: 80px;
     position: relative;
     max-width: 100%;
-    word-wrap: break-word;    
+    word-wrap: break-word;
 `
 
 export const DeleteButton = styled(Icon)`

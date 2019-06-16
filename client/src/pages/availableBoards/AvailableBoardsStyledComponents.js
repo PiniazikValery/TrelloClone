@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const BoardsContainer = styled.div`
-    width: 100vw;
+    padding-left:140px;
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
