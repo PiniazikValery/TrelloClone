@@ -19,6 +19,6 @@ export const AppLayout = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => (
         (Cookies.get('isAuthenticated') === 'false')
             ? <Redirect to="/user/login" />
-            : <div><AppBar /><Content><Component {...props} /></Content></div>
+            : <div><AppBar {...props} /><Content><Component {...props} /></Content></div>
     )} />
 );
