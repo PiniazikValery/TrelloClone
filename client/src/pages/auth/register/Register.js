@@ -1,4 +1,14 @@
 import React, { Component } from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import { Paper, Avatar, Form, Button, Link } from './RegisterStyledComponents';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { showNotification } from '../../../actions'
 import axios from 'axios';
 
 class Register extends Component {
@@ -8,14 +18,15 @@ class Register extends Component {
             email: '',
             name: '',
             password: '',
-            password2: '',
-            errorMessage: '',
+            password2: ''
         };
+        this.goToLoginPage = this.goToLoginPage.bind(this);
         this.handleEmailTyping = this.handleEmailTyping.bind(this);
         this.handleNameTyping = this.handleNameTyping.bind(this);
         this.handlePasswordTyping = this.handlePasswordTyping.bind(this);
         this.handlePassword2Typing = this.handlePassword2Typing.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     handleEmailTyping(event) {
@@ -42,6 +53,10 @@ class Register extends Component {
         });
     }
 
+    goToLoginPage() {
+        this.props.history.push('/user/login');
+    }
+
     handleSubmit() {
         axios.post('/api/user/register', {
             email: this.state.email,
@@ -50,37 +65,111 @@ class Register extends Component {
             password2: this.state.password2,
         })
             .then(() => {
-                this.props.history.push('/user/login')
+                this.props.showNotification(`User ${this.state.name} has been successfully created`, 'success', 6000);
+                this.props.history.push('/user/login');
             })
-            .catch(error => {
-                this.setState({
-                    errorMessage: error,
-                });
-            })
+            .catch(err => this.props.showNotification(err.response.data.register_errors[0].msg, 'error', 6000));
+    }
+
+    handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            this.handleSubmit();
+        }
     }
 
     render() {
         return (
-            <div id="registrationForm" >
-                <h4>Registration</h4>
-                <ul id="formFields">
-                    <li>
-                        <input value={this.state.email} onChange={this.handleEmailTyping} placeholder="Type email here" />
-                    </li>
-                    <li>
-                        <input value={this.state.name} onChange={this.handleNameTyping} placeholder="Type name here" />
-                    </li>
-                    <li>
-                        <input value={this.state.password} onChange={this.handlePasswordTyping} placeholder="Type password here" />
-                    </li>
-                    <li>
-                        <input value={this.state.password2} onChange={this.handlePassword2Typing} placeholder="Repeat your password here" />
-                    </li>
-                </ul>
-                <button onClick={this.handleSubmit} >Register user</button>
-            </div>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Paper>
+                    <Avatar>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign up
+                </Typography>
+                    <Form noValidate>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onKeyPress={this.handleKeyPress}
+                                    autoComplete="fname"
+                                    onChange={this.handleNameTyping}
+                                    name="name"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="name"
+                                    label="Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onKeyPress={this.handleKeyPress}
+                                    variant="outlined"
+                                    onChange={this.handleEmailTyping}
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onKeyPress={this.handleKeyPress}
+                                    variant="outlined"
+                                    onChange={this.handlePasswordTyping}
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onKeyPress={this.handleKeyPress}
+                                    variant="outlined"
+                                    onChange={this.handlePassword2Typing}
+                                    required
+                                    fullWidth
+                                    name="password2"
+                                    label="Repeat password"
+                                    type="password"
+                                    id="password2"
+                                    autoComplete="current-password"
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            fullWidth
+                            onClick={this.handleSubmit}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Sign Up
+                        </Button>
+                        <Grid container>
+                            <Grid item>
+                                <Link onClick={this.goToLoginPage} variant="body2">
+                                    Already have an account? Sign in
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Form>
+                </Paper>
+            </Container>
         );
     }
 }
 
-export default Register;
+const mapDispatchToProps = dispatch => ({
+    showNotification: bindActionCreators(showNotification, dispatch),
+});
+
+export default connect(undefined, mapDispatchToProps)(Register);
