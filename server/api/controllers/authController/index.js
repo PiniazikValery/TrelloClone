@@ -67,6 +67,14 @@ exports.loginUser = (req, res, next) => {
     })(req, res, next);
 };
 
+exports.logoutUser = (req, res, next) => {
+    req.logout();
+    res.cookie('isAuthenticated', true);
+    res.status(205).json({
+        message: 'User successfully loged out'
+    });
+};
+
 exports.failureLogin = (req, res, next) => {
     res.status(403).json({
         message: 'Failure login'

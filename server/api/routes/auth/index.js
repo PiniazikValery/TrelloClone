@@ -6,6 +6,7 @@ const config = require('../../../config');
 
 router.post('/register', authApiController.registerUser);
 router.post('/login', authApiController.loginUser, authApiController.successLogin);
+router.post('/logout', authApiController.logoutUser);
 router.get('/auth/google', passportGoogle.authenticate('google', { scope: ['profile'] }));
 router.get('/auth/google/callback', passportGoogle.authenticate('google', {
     failureRedirect: `${config.get('clientAddress')}/user/login`
