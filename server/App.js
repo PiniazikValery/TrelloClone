@@ -11,6 +11,7 @@ const authRoutes = require('./api/routes/auth');
 const boardRoutes = require('./api/routes/board');
 const listRoutes = require('./api/routes/list');
 const cardRoutes = require('./api/routes/card');
+const userRoutes = require('./api/routes/user');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -44,4 +45,5 @@ app.use('/api/user', authRoutes);
 app.use('/api/board', boardRoutes);
 app.use('/api/list', listRoutes);
 app.use('/api/card', cardRoutes);
+app.use('/api/userInfo', userRoutes);
 app.listen(port, () => console.log(`Listening on port ${port}`));
