@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const userProfile = require('../userProfile');
 
 const UserSchema = new mongoose.Schema({
     name: String,
     userid: String,
     email: String,
     password: String,
+    profile: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserProfile'
+    },
     updated_at: { type: Date, default: Date.now },
 });
 
@@ -23,6 +28,11 @@ UserSchema.pre('save', function hashPassword(next) {
     } else {
         return next();
     }
+});
+
+UserSchema.pre('save', function hashPassword(next) {
+    userProfile.create(this.profile);
+    next();
 });
 
 module.exports = mongoose.model('User', UserSchema);

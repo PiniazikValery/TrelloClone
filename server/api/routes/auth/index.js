@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const authApiController = require('../../controllers/authController');
+const userApiController = require('../../controllers/userController');
 const passportGoogle = require('../../../passportStrategies/googleStrategy');
 const config = require('../../../config');
 
 router.post('/register', authApiController.registerUser);
-router.post('/login', authApiController.loginUser, authApiController.successLogin);
+router.post('/login', authApiController.loginUser, authApiController.successLogin, userApiController.getUser);
 router.post('/logout', authApiController.logoutUser);
 router.get('/auth/google', passportGoogle.authenticate('google', { scope: ['profile'] }));
 router.get('/auth/google/callback', passportGoogle.authenticate('google', {

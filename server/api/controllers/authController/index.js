@@ -1,4 +1,5 @@
 const User = require('../../../models/account/user');
+const userProfile = require('../../../models/account/userProfile');
 const passportLocal = require('../../../passportStrategies/localStrategy');
 const config = require('../../../config');
 
@@ -47,7 +48,12 @@ exports.registerUser = (req, res) => {
                 const newUser = new User({
                     name,
                     email,
-                    password
+                    password,
+                    profile: new userProfile({
+                        avatar: null,
+                        description: 'No description',
+                        shortName: name.match(/\b(\w)/g).join('').toUpperCase()
+                    })
                 });
                 newUser
                     .save()
@@ -63,13 +69,13 @@ exports.registerUser = (req, res) => {
 
 exports.loginUser = (req, res, next) => {
     passportLocal.authenticate('local', {
-        failureRedirect: '/user/failurelogin'
+        failureRedirect: '/api/user/failurelogin'
     })(req, res, next);
 };
 
 exports.logoutUser = (req, res, next) => {
     req.logout();
-    res.cookie('isAuthenticated', true);
+    res.cookie('isAuthenticated', false);
     res.status(205).json({
         message: 'User successfully loged out'
     });
@@ -83,9 +89,7 @@ exports.failureLogin = (req, res, next) => {
 
 exports.successLogin = (req, res, next) => {
     res.cookie('isAuthenticated', true);
-    res.status(200).json({
-        message: 'Success login'
-    });
+    next();
 };
 
 exports.successSocialLogin = (req, res, next) => {
