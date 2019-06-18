@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import { Paper, Avatar, Form, Button, Link } from './RegisterStyledComponents';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { showNotification } from '../../../actions'
+import { showNotification } from '../../../actions';
 import axios from 'axios';
 
 class Register extends Component {

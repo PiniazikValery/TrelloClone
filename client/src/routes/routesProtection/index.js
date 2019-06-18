@@ -1,17 +1,32 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
-const CancelToken = axios.CancelToken;
-const source = CancelToken.source();
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { initUserProfile } from '../../actions';
 
 const RequireAuth = (Page) => {
-    return class App extends Component {
+    const mapDispatchToProps = dispatch => ({
+        initUserProfile: bindActionCreators(initUserProfile, dispatch),
+    });
+
+    const mapStateToProps = state => ({
+        userProfile: state.userProfile
+    });
+    class App extends Component {
+        constructor(props) {
+            super(props);
+            this.CancelToken = axios.CancelToken;
+            this.source = this.CancelToken.source();
+        }
+
         componentDidMount() {
             axios.get('/api/user/isauthenticated', {
-                cancelToken: source.token
+                cancelToken: this.source.token
             })
-                .then(() => this.setState({ isAuthenticated: true }))
+                .then(res => {
+                    this.props.initUserProfile(res.data.user.profile);
+                })
                 .catch((thrown) => {
                     if (!axios.isCancel(thrown)) {
                         Cookies.set('isAuthenticated', false);
@@ -21,12 +36,13 @@ const RequireAuth = (Page) => {
         }
 
         componentWillUnmount() {
-            source.cancel();
+            this.source.cancel();
         }
         render() {
             return (<Page match={this.props.match} history={this.props.history} />);
         }
     }
+    return connect(mapStateToProps, mapDispatchToProps)(App)
 }
 
 export { RequireAuth }

@@ -3,11 +3,9 @@ const userProfile = require('../../../models/account/userProfile');
 const passportLocal = require('../../../passportStrategies/localStrategy');
 const config = require('../../../config');
 
-exports.is_user_authenticated = (req, res) => {
+exports.is_user_authenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
-        res.status(200).json({
-            message: 'User is authenticated'
-        });
+        next();
     } else {
         res.status(403).json({
             error: 'Authentication needed'
@@ -89,7 +87,9 @@ exports.failureLogin = (req, res, next) => {
 
 exports.successLogin = (req, res, next) => {
     res.cookie('isAuthenticated', true);
-    next();
+    res.status(200).json({
+        message: 'Success login'
+    });
 };
 
 exports.successSocialLogin = (req, res, next) => {

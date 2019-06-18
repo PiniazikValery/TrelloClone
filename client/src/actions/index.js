@@ -2,6 +2,7 @@ export * from './listsActions';
 export * from './cardsActions';
 export * from './boardActions';
 export * from './notifierActions';
+export * from './userProfileActions';
 
 export const CONSTANTS = {
     INIT_BOARD: 'INIT_BOARD',
@@ -13,5 +14,7 @@ export const CONSTANTS = {
     EDIT_LIST_TITLE: 'EDIT_LIST_TITLE',
     DRAG_HAPPENED: 'DRAG_HAPPENED',
     SHOW_NOTIFICATION: 'SHOW_NOTIFICATION',
-    HIDE_NOTIFICATION: 'HIDE_NOTIFICATION'
+    HIDE_NOTIFICATION: 'HIDE_NOTIFICATION',
+    INIT_USER_PROFILE: 'INIT_USER_PROFILE',
+    CHANGE_AVATAR: 'CHANGE_AVATAR'
 }

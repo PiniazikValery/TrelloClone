@@ -21,6 +21,11 @@ router.get(
     authMiddleware.requiresAuthentication,
     userApiController.getUserAvatar
 );
+router.get(
+    '/avatar/:id',
+    authMiddleware.requiresAuthentication,
+    userApiController.getUserAvatarById
+);
 router.put(
     '/description',
     authMiddleware.requiresAuthentication,
