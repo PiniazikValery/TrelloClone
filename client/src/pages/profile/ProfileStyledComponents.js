@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
-import IconButton from '@material-ui/core/IconButton';
 
 export const ProfileContainer = styled.div`
     margin: auto;
@@ -19,12 +18,6 @@ const _Avatar = styled(Avatar)`
 export const Description = styled(TextField)`
     margin: auto !important;
     width: 100%;    
-`
-
-export const UploadButton = styled(IconButton)`
-    position: absolute !important;
-    z-index: 1 ;
-    color: white !important;
 `
 
 export { _Avatar as Avatar };
