@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import { ProfileContainer, Avatar, Description, UploadButton } from './ProfileStyledComponents';
+import { ProfileContainer, Avatar, Description } from './ProfileStyledComponents';
 import IconButton from '@material-ui/core/IconButton';
 import { bindActionCreators } from 'redux';
 import { showNotification, changeAvatar } from '../../actions';
