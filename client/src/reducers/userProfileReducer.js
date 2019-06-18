@@ -11,6 +11,11 @@ const userProfileReducer = (state = initialState, action) => {
         case CONSTANTS.INIT_USER_PROFILE: {
             return action.payload;
         }
+        case CONSTANTS.CHANGE_AVATAR: {
+            let newState = state;
+            newState.avatar = action.payload;
+            return { ...state, newState };
+        }
         default:
             return state;
     }

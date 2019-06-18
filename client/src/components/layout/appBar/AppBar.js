@@ -5,9 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { RootBar, Title, AppBar } from './AppBarStyledComponents';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { initUserProfile } from '../../../actions'
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -21,13 +19,8 @@ class _AppBar extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleLogOutClick = this.handleLogOutClick.bind(this);
         this.handleProfileClick = this.handleProfileClick.bind(this);
+        this.handleHomeClick = this.handleHomeClick.bind(this);
     }
-
-    componentDidMount() {
-        axios.get('/api/userInfo/profile')
-            .then(res => this.props.initUserProfile(res.data.user.profile));
-    }
-
 
     handleMenu(event) {
         this.setState({
@@ -54,6 +47,11 @@ class _AppBar extends Component {
         this.props.history.push('/profile');
     }
 
+    handleHomeClick() {
+        this.handleClose();
+        this.props.history.push('/home');
+    }
+
     render() {
         return (
             <RootBar>
@@ -70,7 +68,7 @@ class _AppBar extends Component {
                                 onClick={this.handleMenu}
                                 color="inherit"
                             >
-                                <Avatar alt="Remy Sharp" src={this.props.userProfile.avatar ? '/api/userInfo/avatar' : undefined} >{this.props.userProfile.shortName}</Avatar>
+                                <Avatar alt="Remy Sharp" src={this.props.userProfile.avatar ? `/api/userInfo/avatar/${this.props.userProfile.avatar}` : undefined} >{this.props.userProfile.shortName}</Avatar>
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
@@ -87,6 +85,7 @@ class _AppBar extends Component {
                                 open={Boolean(this.state.anchorEl)}
                                 onClose={this.handleClose}
                             >
+                                <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
                                 <MenuItem onClick={this.handleProfileClick}>Profile</MenuItem>
                                 <MenuItem onClick={this.handleLogOutClick}>Log out</MenuItem>
                             </Menu>
@@ -98,12 +97,8 @@ class _AppBar extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    initUserProfile: bindActionCreators(initUserProfile, dispatch),
-});
-
 const mapStateToProps = state => ({
     userProfile: state.userProfile
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(_AppBar);
+export default connect(mapStateToProps)(_AppBar);

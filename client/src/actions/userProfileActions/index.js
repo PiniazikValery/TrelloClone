@@ -6,3 +6,10 @@ export const initUserProfile = (userProfile) => {
         payload: userProfile
     }
 }
+
+export const changeAvatar = (newAvatar) => {
+    return {
+        type: CONSTANTS.CHANGE_AVATAR,
+        payload: newAvatar
+    }
+}

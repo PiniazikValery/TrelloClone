@@ -1,5 +1,6 @@
 const User = require('../../../models/account/user');
 const AvatarStorage = require('../../../models/fileStorageFacilities/avatarStorage');
+const mongoose = require('mongoose')
 
 const avatarStorage = new AvatarStorage();
 
@@ -46,6 +47,21 @@ exports.getUserAvatar = (req, res) => {
 
 };
 
+exports.getUserAvatarById = (req, res) => {
+    avatarStorage.getDownloadStreamOfFileById(mongoose.Types.ObjectId(req.params.id), (downloadStream) => {
+        downloadStream.on('data', (chunk) => {
+            res.write(chunk);
+        });
+        downloadStream.on('error', () => {
+            res.sendStatus(404);
+        });
+        downloadStream.on('end', () => {
+            res.end();
+        });
+    });
+
+};
+
 exports.uploadAvatar = (req, res) => {
     User.findById(req.user.id)
         .populate('profile')
@@ -62,7 +78,8 @@ exports.uploadAvatar = (req, res) => {
             foundUser.profile.avatar = req.file.id;
             foundUser.profile.save();
             res.status(201).json({
-                message: 'Avatar has been successfully uploaded'
+                message: 'Avatar has been successfully uploaded',
+                avatarId: req.file.id
             });
         });
 };
