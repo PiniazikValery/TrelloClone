@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const passport = require('passport');
+const http = require("http");
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -12,6 +13,7 @@ const boardRoutes = require('./api/routes/board');
 const listRoutes = require('./api/routes/list');
 const cardRoutes = require('./api/routes/card');
 const userRoutes = require('./api/routes/user');
+const socketio = require('socket.io');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -46,4 +48,10 @@ app.use('/api/board', boardRoutes);
 app.use('/api/list', listRoutes);
 app.use('/api/card', cardRoutes);
 app.use('/api/userInfo', userRoutes);
-app.listen(port, () => console.log(`Listening on port ${port}`));
+
+const server = http.createServer(app);
+
+const io = socketio(server);
+app.set('io', io);
+
+server.listen(port);
