@@ -33,12 +33,15 @@ class Login extends Component {
         this.goToRegisterPage = this.goToRegisterPage.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.startGoogleAuth = this.startGoogleAuth.bind(this);
+        this.openPopup = this.openPopup.bind(this);
+        this.checkPopup = this.checkPopup.bind(this);
     }
 
     componentDidMount() {
         socket.on('successGoogleAuth', () => {
-            console.log('hit');
-            this.popup.close();
+            if (this.popup) {
+                this.popup.close();
+            }
             Cookies.set('isAuthenticated', true);
             this.props.history.push('/home');
         })
