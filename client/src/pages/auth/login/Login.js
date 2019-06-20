@@ -10,21 +10,38 @@ import { Paper, Avatar, Form, Button, Link, GoogleLoginButtonWrapper } from './L
 import { GoogleLoginButton } from '../../../components/google/loginButton'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { showNotification } from '../../../actions'
+import { showNotification } from '../../../actions';
+import Cookies from 'js-cookie';
+import io from 'socket.io-client'
+import { API_URL } from '../../../config'
 import axios from 'axios';
+
+
+const socket = io(API_URL);
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            googleLoginButtonIsDisabled: false
         };
         this.handleEmailTyping = this.handleEmailTyping.bind(this);
         this.handlePasswordTyping = this.handlePasswordTyping.bind(this);
         this.onLogin = this.onLogin.bind(this);
         this.goToRegisterPage = this.goToRegisterPage.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.startGoogleAuth = this.startGoogleAuth.bind(this);
+    }
+
+    componentDidMount() {
+        socket.on('successGoogleAuth', () => {
+            console.log('hit');
+            this.popup.close();
+            Cookies.set('isAuthenticated', true);
+            this.props.history.push('/home');
+        })
     }
 
     handleEmailTyping(event) {
@@ -60,6 +77,38 @@ class Login extends Component {
 
     goToRegisterPage() {
         this.props.history.push('/user/register');
+    }
+
+    checkPopup() {
+        const check = setInterval(() => {
+            const { popup } = this
+            if (!popup || popup.closed || popup.closed === undefined) {
+                clearInterval(check)
+                this.setState({ googleLoginButtonIsDisabled: false })
+            }
+        }, 1000)
+    }
+
+    openPopup() {
+        const width = 600, height = 600
+        const left = (window.innerWidth / 2) - (width / 2)
+        const top = (window.innerHeight / 2) - (height / 2)
+        const url = `${API_URL}/api/user/auth/google?socketId=${socket.id}`
+
+        return window.open(url, '',
+            `toolbar=no, location=no, directories=no, status=no, menubar=no, 
+          scrollbars=no, resizable=no, copyhistory=no, width=${width}, 
+          height=${height}, top=${top}, left=${left}`
+        )
+    }
+
+    startGoogleAuth(e) {
+        if (!this.state.googleLoginButtonIsDisabled) {
+            e.preventDefault()
+            this.popup = this.openPopup()
+            this.checkPopup()
+            this.setState({ googleLoginButtonIsDisabled: true })
+        }
     }
 
     render() {
@@ -108,10 +157,8 @@ class Login extends Component {
                         >
                             Sign In
                         </Button>
-                        <GoogleLoginButtonWrapper>
-                            <a href="http://localhost:5000/api/user/auth/google">
-                                <GoogleLoginButton />
-                            </a>
+                        <GoogleLoginButtonWrapper onClick={this.state.googleLoginButtonIsDisabled ? undefined : this.startGoogleAuth}>
+                            <GoogleLoginButton />
                         </GoogleLoginButtonWrapper>
                         <Grid container>
                             <Grid item>
