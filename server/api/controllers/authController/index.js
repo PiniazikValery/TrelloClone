@@ -1,6 +1,7 @@
 const User = require('../../../models/account/user');
 const userProfile = require('../../../models/account/userProfile');
 const passportLocal = require('../../../passportStrategies/localStrategy');
+
 exports.is_user_authenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         next();
