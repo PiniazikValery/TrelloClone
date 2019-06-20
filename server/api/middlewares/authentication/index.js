@@ -8,7 +8,12 @@ exports.requiresAuthentication = (req, res, next) => {
     }
 };
 
-exports.addSocketIdtoSession = (req, res, next) => {
-    req.session.socketId = req.query.socketId
+exports.addSocketIdstoSession = (req, res, next) => {
+    if (!req.session.socketIds) {
+        req.session.socketIds = [];
+        req.session.socketIds.push(req.query.socketId);
+    } else {
+        req.session.socketIds.push(req.query.socketId);
+    }
     next()
 }

@@ -1,7 +1,6 @@
 const User = require('../../../models/account/user');
 const userProfile = require('../../../models/account/userProfile');
 const passportLocal = require('../../../passportStrategies/localStrategy');
-const config = require('../../../config');
 exports.is_user_authenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         next();
@@ -92,9 +91,9 @@ exports.successLogin = (req, res, next) => {
 };
 
 exports.googleLogin = (req, res, next) => {
-    console.log('hit');
     res.cookie('isAuthenticated', true);
     const io = req.app.get('io');
-    io.in(req.session.socketId).emit('successGoogleAuth');
+    req.session.socketIds.map(id => io.in(id).emit('successGoogleAuth'));
+    req.session.socketIds = [];
     next();
 };
