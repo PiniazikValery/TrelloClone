@@ -16,7 +16,7 @@ const cardRoutes = require('./api/routes/card');
 const userRoutes = require('./api/routes/user');
 const socketio = require('socket.io');
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '/../client/build')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,7 +54,7 @@ app.use('/api/card', cardRoutes);
 app.use('/api/userInfo', userRoutes);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 });
 
 const server = http.createServer(app);
