@@ -5,7 +5,8 @@
         "client": "cd client && npm run start",
         "server": "nodemon ./server/App.js",
         "prestart": "npm install",
-        "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+        "start": "npm run server",
+        "heroku-postbuild": "cd client && npm install && npm run build"
     },
     "dependencies": {
         "async": "^3.1.1",
