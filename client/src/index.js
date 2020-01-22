@@ -5,22 +5,12 @@ import store from './store';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes } from './routes'
 import * as serviceWorker from './serviceWorker';
-import { createBrowserHistory } from 'history';
-import ReactGA from 'react-ga';
-
-const history = createBrowserHistory();
-
-const trackingId = "UA-156682948-1";
-
-history.listen(location => {
-    ReactGA.initialize(trackingId);
-    ReactGA.set({ page: location.pathname });
-    ReactGA.pageview(location.pathname);
-});
+import GA from './ga/google_analytics';
 
 ReactDOM.render(
     <Provider store={store}>
         <Router>
+            {GA.init() && <GA.RouteTracker />}
             <Routes />
         </Router>
     </Provider>
