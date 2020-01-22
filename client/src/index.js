@@ -5,6 +5,19 @@ import store from './store';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes } from './routes'
 import * as serviceWorker from './serviceWorker';
+import { createBrowserHistory } from 'history';
+import ReactGA from 'react-ga';
+
+const history = createBrowserHistory();
+
+const trackingId = "UA-156682948-1";
+
+ReactGA.initialize(trackingId);
+
+history.listen(location => {
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
+});
 
 ReactDOM.render(
     <Provider store={store}>
