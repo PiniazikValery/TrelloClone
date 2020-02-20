@@ -15,7 +15,7 @@ passport.use(new GoogleStrategy({
                     name: profile.displayName, userid: profile.id, profile: new userProfile({
                         avatar: null,
                         description: 'No description',
-                        shortName: profile.displayName.match(/\b(\w)/g).join('').toUpperCase()
+                        shortName: profile.displayName.split(' ').map(word => word[0].toUpperCase()).join('')
                     })
                 }, (create_user_err, created_user) => {
                     return done(create_user_err, created_user)
