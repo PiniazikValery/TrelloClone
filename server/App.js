@@ -21,8 +21,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     secret: 'secret',
+    cookie: { maxAge: 2 * 60 * 60 * 1000 },
+    rolling: true,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: false
   })
 );
 app.use(passport.initialize());
